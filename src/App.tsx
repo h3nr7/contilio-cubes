@@ -5,8 +5,14 @@ import { Routes, Route, Link } from 'react-router-dom';
 import Dashboard from './components/Dashboard/Dashboard';
 import Cubes from './components/Cubes/Cubes';
 import Layout from './components/Layout/Layout';
+import Card from './components/Card/Card';
 
-class App extends React.Component {
+/**
+ * App
+ * 
+ * @returns App page 
+ */
+export default class App extends React.Component {
 
   render() {
     return (
@@ -35,10 +41,11 @@ class Home extends React.Component {
   render() {
     return(
       <div className="app_home__container">
-        <h1>Welcome!</h1>
+          <Card>
+            <h1>Welcome!</h1>
+            <p>Bacon ipsum dolor amet burgdoggen fatback pig shoulder salami, ribeye tenderloin ball tip. Brisket flank andouille pork chop.</p>
+          </Card>
       </div>
     );
   }
 }
-
-export default App;

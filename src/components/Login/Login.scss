@@ -1,7 +1,21 @@
 .login {
 
   &__container {
-    margin: 10px;
-    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: stretch;
+    min-width: 300px;
+    max-width: 500px;
+    
+  }
+
+  &__form_ele {
+    margin: 20px 0 0px;
+
+    &--submit {
+      margin: 40px 0 0px;
+    }
   }
 }

@@ -2,12 +2,29 @@
 
   &__container {
     width: auto;
+    display: flex;
+    flex-direction: column;
+    order: 3;
 
     nav {
       display: flex;
-      width: 100%;
-      min-height: 40px; 
-      padding: 10px;
+      flex-direction: row;
+      flex-grow: 1;
+      width: auto;
+      padding: 10px 20px;
+      justify-content:flex-start;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+
+      a {
+        margin: 0 0px;
+        padding: 10px;
+        text-decoration: none;
+
+        &:visited {
+          color:black;
+        }
+      }
     }
   }
 
