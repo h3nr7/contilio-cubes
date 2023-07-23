@@ -1,0 +1,19 @@
+.app {
+
+  &__container {
+    width: auto;
+
+    nav {
+      display: flex;
+      width: 100%;
+      min-height: 40px; 
+      padding: 10px;
+    }
+  }
+
+  &_home {
+    &__container {
+      
+    }
+  }
+}

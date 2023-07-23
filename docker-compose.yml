@@ -1,0 +1,20 @@
+version: '3.6'
+services:
+  app:
+    environment:
+      - ENVIRONMENT=development
+    image: nest-pnpm-docker
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: '.'
+        target: '/usr/app'
+    ports:
+      - '3000:3000'
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        npm run start

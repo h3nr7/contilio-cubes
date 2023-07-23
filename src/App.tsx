@@ -1,26 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import Login from './components/Login/Login';
+import { Routes, Route, Link } from 'react-router-dom';
+import Dashboard from './components/Dashboard/Dashboard';
+import Cubes from './components/Cubes/Cubes';
+import Layout from './components/Layout/Layout';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  render() {
+    return (
+      <div className="app__container">
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/login">Login</Link>
+          <Link to="dashboard">Dashboard</Link>
+          <Link to="cubes">Cubes</Link>
+        </nav>
+        <Routes>
+          <Route path='/' element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="cubes" element={<Cubes />} />
+          </Route>
+        </Routes>
+      </div>
+    );
+  }
+}
+
+// default index page
+class Home extends React.Component {
+  render() {
+    return(
+      <div className="app_home__container">
+        <h1>Welcome!</h1>
+      </div>
+    );
+  }
 }
 
 export default App;
