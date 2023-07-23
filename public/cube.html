@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Contilio Three.js Code Challenge</title>
+    <style>
+      * {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script src="https://unpkg.com/stats-js@1.0.1/build/stats.min.js"></script>
+    <script type="importmap">
+			{
+				"imports": {
+					"three": "https://unpkg.com/three@0.154.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.154.0/examples/jsm/",
+          "gui": "https://unpkg.com/dat.gui@0.7.9/build/dat.gui.module.js"
+        }
+			}
+		</script>
+    <script type="module">
+      import * as THREE from 'three';
+      import dat from 'gui';
+      import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+      let stats, gui, width, height, renderer, controls, 
+          scene, camera, light, group, amount;
+
+      const api = {
+        amount: 30,
+        rotate: true
+      }
+
+
+      // init
+      function init() {
+
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        // stats
+        stats = new Stats();
+        stats.showPanel(0);
+        stats.dom.style.cssText  = "position:fixed;top:0px;right:0px;";
+
+        // gui
+        gui = new dat.GUI({ autoPlace: false });
+        gui.domElement.style.overflow = "visible";
+        gui.domElement.style.position = "fixed";
+        gui.domElement.style.left = "0px";
+        gui.domElement.style.top = "0px";
+        gui.add(api, 'amount', 2, 120).step(1).onChange(initCubes);
+        gui.add(api, 'rotate', true);
+
+        // renderer
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(width, height);
+
+        // camera
+        camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
+        
+        // controls
+        controls = new OrbitControls( camera, renderer.domElement );
+        // controls.autoRotate = true;
+
+        // light
+        light = new THREE.PointLight(0xffffff);
+        light.position.set(-100, 200, 100);
+
+        // scene
+        scene = new THREE.Scene();
+        scene.add(camera);
+        scene.add(light);
+        
+        document.body.appendChild(renderer.domElement);
+        document.body.appendChild(stats.dom);
+        document.body.appendChild(gui.domElement);
+        console.log('init three');
+      }
+
+
+      // init cubes
+      function initCubes() {
+
+        destroy();
+
+        const count = Math.pow(api.amount, 3);
+        const offset = (api.amount - 1) / 2;
+
+        group = new THREE.Group();
+
+        const geometry = new THREE.BoxGeometry(0.75, 0.75, 0.75);
+        const material = new THREE.MeshNormalMaterial();
+        const mesh = new THREE.InstancedMesh(geometry, material, count);
+        const mat4 = new THREE.Matrix4();
+
+        let i = 0;
+        for (let x = 0; x < api.amount; x++) {
+          for (let y = 0; y < api.amount; y++) {
+            for (let z = 0; z < api.amount; z++) {
+              mat4.setPosition(offset - x, offset - y, offset - z);
+              mesh.setMatrixAt(i, mat4);
+              
+              group.add(mesh);
+              i++;
+
+            }
+          }
+        }
+
+        scene.add(group);
+        camera.position.z = api.amount * 2.5;
+        camera.lookAt(0, 0, 0);
+
+        console.log(`init ${count} cubes`);
+      }
+
+
+      function destroy() {
+        const meshes = [];
+
+        scene.traverse(function(obj) {
+          if(obj) meshes.push(obj);
+        });
+
+        const len = meshes.length;
+        for(let i = 0; i < len; i++) {
+          const mesh = meshes[i];
+          if(mesh.isMesh) {
+            mesh.material.dispose();
+            mesh.geometry.dispose();
+          }
+				  scene.remove( mesh );
+        }
+
+        console.log(`destroyed ${len} meshes!`);
+
+      }
+
+
+      // resize
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      }
+
+
+      // animate
+      function animate() {
+        requestAnimationFrame(animate);
+
+        if(api.rotate) {
+          group.rotation.x += 0.002;
+          group.rotation.y += 0.004;
+        }
+        
+        controls.update();
+        stats.update();
+        render();
+      }
+
+
+      // render
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+
+      init();
+      initCubes();
+      resize();
+      animate();
+      render();
+
+      window.addEventListener('resize', resize);
+
+    </script>
+  </body>
+</html>
