@@ -32,7 +32,7 @@
     "build": "npm run clean && concurrently \"npm run build:client\" \"npm run build:server\"",
     "build:client": "react-scripts build",
     "build:server": "tsc -p ./server",
-    "build:jsdoc": "typedoc --out jsdoc src/**/*.tsx",
+    "build:jsdoc": "typedoc --out jsdoc --entryPointStrategy expand ./src",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "clean": "rimraf dist build"
