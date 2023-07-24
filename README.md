@@ -1,6 +1,6 @@
 # Contilio - Cubes
 
-This project contains a SPA written in TypeScript, tackling 2 given tasks included in the [PDFs of given tasks](./doc).
+This project contains a SPA written in TypeScript, tackling 2 given tasks included in the [PDFs](./doc).
 
 The auto generated jsDoc can be accessed here - [TypeDoc](./jsdoc/index.html)
 
