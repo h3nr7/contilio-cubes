@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #99acd5;
+  background: #e3e3e3;
   width: 100vw;
   height: auto;
   min-height: 100vh;
@@ -26,11 +26,17 @@ h1 {
 }
 
 h2 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 400;
 }
 
 p {
   font-size: 0.8rem;
   margin: 0.5rem 0;
+}
+
+.messaging {
+  &__info {
+    color: #9966ff;
+  }
 }

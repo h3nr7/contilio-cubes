@@ -4,29 +4,61 @@ import { ILogin } from './Login.interface';
 import Card from '../Card/Card';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
+import { useNavigate } from 'react-router-dom';
+import { withNavi } from '../../hooks/withNav';
 
-export default class Login extends React.Component<React.PropsWithChildren> {
+class Login extends React.Component<React.PropsWithChildren<ILogin>> {
+
+  static DELAY = 2500;
 
   state = {
     email: '',
-    password: ''
+    password: '',
+    disabled: true,
+    submitSuccess: false
   }
 
+  // email change handler
   emailChangeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ email: e.target.value});
+    this.setState({ 
+      email: e.target.value,
+      disabled: !this.validator(e.target.value, this.state.password)
+    });
   }
 
+  // password change handler
   passChangeHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ password: e.target.value});
+    this.setState({ 
+      password: e.target.value,
+      disabled: !this.validator(this.state.email, e.target.value)
+    });
   }
 
-  validator(): boolean {
-    // TODO: add validation
+  // form submit handler
+  submitHandler = (e:React.MouseEvent) => {
+    // Final validation can be BE instead of FE
+    if(this.validator(this.state.email, this.state.password)) {
+      this.setState({submitSuccess: true}, () => {
+        setTimeout(() => this.props.navigate('/dashboard'), Login.DELAY);
+      })
+    } else {
+      // TODO: Can have some kind of error response
+    }
+  }
+  
+  // validator for email and password
+  validator(email: string, password: string): boolean {
+    // basic regex
+    const re = /^\S+@\S+\.\S+$/;
+    
+    if(email?.length>3 && password?.length>3 && re.test(email)) return true;
     return false;
   }
 
-
   render() {
+
+    const { disabled, submitSuccess } = this.state;
+
     return (
       <React.Suspense>
         <div className='login__container'>
@@ -46,11 +78,22 @@ export default class Login extends React.Component<React.PropsWithChildren> {
               placeholder='Password'
               onChange={this.passChangeHandler} />
             <Button 
+              disabled={disabled}
+              onClick={this.submitHandler}
               className='login__form_ele--submit'
               name="Submit" />
+            {
+              submitSuccess && <p className='messaging__info'>Validation successful, redirect to next page...</p>
+            }
           </Card>
         </div>
       </React.Suspense>
     )
   }
 }
+
+/**
+ * HOC navigate functio to pass on props for react-router
+ * function
+ */
+export default withNavi(Login);

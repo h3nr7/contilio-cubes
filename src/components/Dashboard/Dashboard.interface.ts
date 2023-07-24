@@ -1,7 +1,9 @@
+import { NavigateFunction } from "react-router-dom"
+
 export interface Attrib {
   name: string
   value: number
-  unit: 'm' | 'kg'
+  unit: string
 }
 
 export interface Data {
@@ -10,5 +12,12 @@ export interface Data {
 }
 
 export interface IDashboard {
-  data: Data[]
+  navigate: NavigateFunction
 }
+
+export interface IDashboardState {
+  data: Data[]
+  curPage: number
+  totPage: number
+}
+

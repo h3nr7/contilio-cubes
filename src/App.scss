@@ -24,6 +24,10 @@
         &:visited {
           color:black;
         }
+
+        &.active {
+          color: #00b9ff;
+        }
       }
     }
   }
@@ -31,6 +35,11 @@
   &_home {
     &__container {
       
+    }
+
+    &__button {
+      margin-top: 20px;
+      max-width: 120px;
     }
   }
 }
